@@ -180,6 +180,30 @@ class FlightStats::Flight < FlightStats::Base
       date_for_format(operational_times['actualGateArrival'], format)
     end
 
+    def estimated_runway_departure(format = :utc)
+      return unless operational_times
+
+      date_for_format(operational_times['estimatedRunwayDeparture'], format)
+    end
+
+    def actual_runway_departure(format = :utc)
+      return unless operational_times
+
+      date_for_format(operational_times['actualRunwayDeparture'], format)
+    end
+
+    def estimated_runway_arrival(format = :utc)
+      return unless operational_times
+
+      date_for_format(operational_times['estimatedRunwayArrival'], format)
+    end
+
+    def actual_runway_arrival(format = :utc)
+      return unless operational_times
+
+      date_for_format(operational_times['actualRunwayArrival'], format)
+    end
+
     def to_h
       h = {}
 
