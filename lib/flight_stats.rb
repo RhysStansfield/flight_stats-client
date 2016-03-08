@@ -9,25 +9,35 @@ module FlightStats
       Flight.build_from(Api::Status::Airport.by_arriving_on_date(airport, date, params)['flightStatuses'])
     end
 
-    def find_flight_schedule(date, carrier, number, params = {})
-      if params.delete(:method) != :departing
-        flight_params = FlightStats::Api::Schedule.by_arriving_on_date(carrier, number, date, params)
+    def find_flight_schedule(timestamp, carrier, number, params = {})
+      departing = params.delete(:method) == :departing
+      if departing
+        flight_params = FlightStats::Api::Schedule.by_departing_on_date(carrier, number, timestamp, params)
       else
-        flight_params = FlightStats::Api::Schedule.by_departing_on_date(carrier, number, date, params)
+        flight_params = FlightStats::Api::Schedule.by_arriving_on_date(carrier, number, timestamp, params)
       end
 
-      puts flight_params      
-      ScheduledFlight.build_from(flight_params['scheduledFlights']).first
+      puts flight_params
+      ScheduledFlight.build_from(flight_params['scheduledFlights']).detect do |f|
+        check = departing ? f.departure_time : f.arrival_time
+
+        check >= timestamp - 5.minutes and check <= timestamp + 5.minutes
+      end
     end
 
-    def find_flight_status(date, carrier, number, params = {})
-      if params.delete(:method) != :departing
-        flight_params = FlightStats::Api::Status::Flight.by_arriving_on_date(carrier, number, date, params)['flightStatuses']
+    def find_flight_status(timestamp, carrier, number, params = {})
+      departing = params.delete(:method) != :departing
+      if departing
+        flight_params = FlightStats::Api::Status::Flight.by_departing_on_date(carrier, number, timestamp, params)['flightStatuses']
       else
-        flight_params = FlightStats::Api::Status::Flight.by_departing_on_date(carrier, number, date, params)['flightStatuses']
+        flight_params = FlightStats::Api::Status::Flight.by_arriving_on_date(carrier, number, timestamp, params)['flightStatuses']
       end
 
-      Flight.build_from(flight_params).first
+      Flight.build_from(flight_params).detect do |f|
+        check = departing ? f.departure_time : f.arrival_time
+
+        check >= timestamp - 5.minutes and check <= timestamp + 5.minutes
+      end
     end
 
     def flight_status_by_id(flight_id)

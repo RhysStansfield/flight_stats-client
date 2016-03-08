@@ -6,8 +6,8 @@ require 'flight_stats/version'
 Gem::Specification.new do |spec|
   spec.name          = "flight_stats-client"
   spec.version       = FlightStats::VERSION
-  spec.authors       = ["Rhys Stansfield"]
-  spec.email         = ["r.stansfield@voc-8.com"]
+  spec.authors       = ["Rhys Stansfield", "David Goring"]
+  spec.email         = ["david@bluebaboondigital.com"]
   spec.summary       = %q{Simple ruby api wrapper for FlightStats}
   spec.description   = %q{}
   spec.homepage      = ""
