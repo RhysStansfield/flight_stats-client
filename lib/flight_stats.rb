@@ -34,7 +34,7 @@ module FlightStats
       end
 
       Flight.build_from(flight_params).detect do |f|
-        check = departing ? f.departure_time : f.arrival_time
+        check = departing ? f.published_departure : f.published_arrival
 
         check >= timestamp - 5.minutes and check <= timestamp + 5.minutes
       end
