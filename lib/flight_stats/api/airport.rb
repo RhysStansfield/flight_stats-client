@@ -65,7 +65,8 @@ class FlightStats::Api::Airport < FlightStats::Api
     private
 
     def airports(query, params = {})
-      get(build_url(body: query, params: params))['airports']
+      res = get(build_url(body: query, params: params))
+      res['airports'].present? ? res['airports'] : res['airport']
     end
   end
 

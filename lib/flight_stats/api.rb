@@ -92,6 +92,8 @@ class FlightStats::Api
     end
 
     def date_to_url_section(time)
+      time = DateTime.parse(time) if time.is_a? String
+
       time.strftime("%Y/%m/%d")
     end
 
