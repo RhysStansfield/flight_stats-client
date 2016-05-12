@@ -19,7 +19,7 @@ module FlightStats
 
       timestamp = timestamp.change(offset: 0)
 
-      ScheduledFlight.build_from(flight_params['scheduledFlights']).detect do |f|
+      Flight.build_from(flight_params['scheduledFlights'], :schedule).detect do |f|
         check = departing ? f.departure_time(:local) : f.arrival_time(:local)
 
         check >= timestamp - 5.minutes and check <= timestamp + 5.minutes
