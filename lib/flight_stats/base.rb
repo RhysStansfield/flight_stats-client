@@ -17,11 +17,16 @@ class FlightStats::Base
   end
 
   def initialize(params = {})
+    @raw = params
     self.class.all_attributes.each do |attribute|
       camel_case_version = attribute.to_s.camelize(:lower)
 
       instance_variable_set("@#{attribute}", params[camel_case_version])
     end
+  end
+
+  def attributes
+    @raw ||= []
   end
 end
 
@@ -30,3 +35,4 @@ require_relative './airport'
 require_relative './codeshare'
 require_relative './equipment'
 require_relative './flight'
+require_relative './scheduled_flight'

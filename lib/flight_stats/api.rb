@@ -92,6 +92,8 @@ class FlightStats::Api
     end
 
     def date_to_url_section(time)
+      time = DateTime.parse(time) if time.is_a? String
+
       time.strftime("%Y/%m/%d")
     end
 
@@ -121,3 +123,4 @@ require_relative './api/airline'
 require_relative './api/airport'
 require_relative './api/status'
 require_relative './api/track'
+require_relative './api/schedule'
